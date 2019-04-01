@@ -1,7 +1,7 @@
-package handlers
+package web
 
 import "net/http"
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
+func requestHandler(w http.ResponseWriter, r *http.Request) {
 
 }
