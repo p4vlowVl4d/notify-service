@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	"github.com/p4vlowVl4d/notify-service/web"
 	config "github.com/spf13/viper"
+	"log"
+	"net/http"
 )
 
 const (
@@ -18,19 +18,11 @@ func main() {
 	if err := config.ReadInConfig(); err != nil {
 		log.Fatal(err)
 	}
-	http.HandleFunc("/", web.Router)
 	port := config.GetString("server.port")
-	if len(port) > 0 {
-		fmt.Printf("Starting server on %s\n", port)
-		log.Fatal(http.ListenAndServe(port, nil))
-	} else {
-		fmt.Printf("Starting server on %s\n", defaultPortListen)
-		log.Fatal(http.ListenAndServe(port, nil))
-	}
-
+	fmt.Printf("Starting web server, listen on port: %s", port)
+	http.ListenAndServe(port, web.requestHandle)
 }
 
-//type Router struct {
-//	name 	string
-//	handlers map[string]web.WebHandle
-//}
+type WebData struct {
+
+}
