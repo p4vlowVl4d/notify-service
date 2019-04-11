@@ -1,5 +1,7 @@
 server:
   port: ":8080"
+  readTimeout: 5
+  writeTimeout: 10
 service:
   storage: "/data/"
 handlers:
