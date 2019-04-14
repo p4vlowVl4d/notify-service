@@ -4,11 +4,12 @@ server:
   writeTimeout: 10
 service:
   storage: "/data/"
-handlers:
+routes:
   index:
     name: "index"
     route: "/"
-    api:
-      enable: true
-    auth:
-      enable: false
+  save:
+    name: "save"
+    route: "/api/{username}"
+    about: "this method file saved by users"
+

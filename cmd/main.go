@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	_ "github.com/p4vlowVl4d/notify-service/web"
+	"github.com/p4vlowVl4d/notify-service/web"
 	config "github.com/spf13/viper"
 	"math/rand"
 	"time"
@@ -23,11 +23,10 @@ func main() {
 		panic(err)
 	}
 	webConf := createWebConfig()
-	Execute(webConf)
+	web.Execute(webConf)
 }
 
-//noinspection ALL
-func createWebConfig() *WebConf {
+func createWebConfig() *web.WebConf {
 	readTime, writeTimeout := config.GetInt32("server.readTimeout"), config.GetInt32("server.writeTimeout")
 	if readTime <= int32(0) || writeTimeout <= int32(0) {
 		panic("Please set timeout option in config file!")
@@ -38,7 +37,7 @@ func createWebConfig() *WebConf {
 	}
 	readTime = rand.Int31n(readTime)
 	writeTimeout = rand.Int31n(writeTimeout)
-	return &WebConf{
+	return &web.WebConf{
 		ReadTimeout:  time.Duration(readTime),
 		WriteTimeout: time.Duration(writeTimeout),
 		PortListen:   port,

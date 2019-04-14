@@ -3,9 +3,14 @@ package handlers
 import (
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
 )
+
+func methodSave(w http.ResponseWriter, r *http.Request) {
+
+}
 
 func (f UserFile) save() (string, error) {
 	if f.User.Role.Save != true {

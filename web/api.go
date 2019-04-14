@@ -3,7 +3,6 @@ package web
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/p4vlowVl4d/notify-service/web"
 	"log"
 	"net/http"
 	"time"
@@ -12,15 +11,22 @@ import (
 func Execute(c *WebConf) {
 	fmt.Println("Configure web server...")
 	r := mux.NewRouter()
+	r.Host(c.Host)
+	SetHandlers(r)
 	srv := &http.Server{
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
-		Addr:         port,
+		Addr:         fmt.Sprintf("%s:%s", c.Host, c.PortListen),
 		Handler:      r,
 	}
-	r.Get("/").Handler(web.ApiServe)
-	fmt.Printf("Starting web server, listen on port: %s", port)
+	fmt.Printf("Starting web server, listen on address: %s:%s", c.Host, c.PortListen)
 	log.Println(srv.ListenAndServe())
+}
+
+func SetHandlers(r *mux.Router) {
+	r.HandleFunc("/", methodIndex).
+		Methods("GET").
+		Headers("Content-Type", "application/json")
 }
 
 type WebConf struct {
@@ -28,4 +34,12 @@ type WebConf struct {
 	WriteTimeout time.Duration
 	PortListen   string
 	Host         string
+}
+
+type WebRoute struct {
+	Name         string
+	Method       string
+	Url          string
+	ContentType  string
+	Private, Api bool
 }
