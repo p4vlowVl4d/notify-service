@@ -1,4 +1,4 @@
-package handlers
+package web
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"github.com/p4vlowVl4d/notify-service/model"
 )
 
 func methodSave(w http.ResponseWriter, r *http.Request) {

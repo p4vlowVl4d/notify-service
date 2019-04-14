@@ -1,7 +1,7 @@
-package handlers
+package web
 
 import (
-	json "encoding/json"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
