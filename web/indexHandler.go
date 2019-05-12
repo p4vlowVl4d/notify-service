@@ -3,29 +3,27 @@ package web
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
 	config "github.com/spf13/viper"
+	"net/http"
 )
 
 func methodIndex(w http.ResponseWriter, r *http.Request) {
-	bytes, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
 	var body indexRequest
-	jsonErr := json.Unmarshal(bytes, &body)
-	if jsonErr != nil {
-		log.Fatal(jsonErr)
+	err := json.NewDecoder(r.Body).Decode(&body)
+	if err != nil {
+		fmt.Println(err)
 	}
 	resp := MakeResponse(body)
-	r.Header.Set("Content-Type", "application/json; charset=utf-8")
+	r.Header.Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(resp)
 }
 
 func MakeResponse(r indexRequest)*testResponse {
-	a := config.GetString(fmt.Sprintf("routes.%s", r.MethodName))
+	a := config.GetString(fmt.Sprintf("routes.%s.about", r.MethodName))
+	if a == "" {
+		return &testResponse{}
+	}
 	return &testResponse{
 		Title: r.MethodName,
 		About: a,
@@ -38,5 +36,5 @@ type testResponse struct {
 }
 
 type indexRequest struct {
-	MethodName	string	`json:"title"`
+	MethodName	string	`json:"method"`
 }

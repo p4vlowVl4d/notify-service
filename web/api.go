@@ -8,24 +8,30 @@ import (
 	"time"
 )
 
+
+
 func Execute(c *WebConf) {
 	fmt.Println("Configure web server...")
 	r := mux.NewRouter()
 	r.Host(c.Host)
 	SetHandlers(r)
 	srv := &http.Server{
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  c.ReadTimeout * time.Second,
+		WriteTimeout: c.WriteTimeout * time.Second,
 		Addr:         fmt.Sprintf("%s:%s", c.Host, c.PortListen),
 		Handler:      r,
 	}
-	fmt.Printf("Starting web server, listen on address: %s:%s", c.Host, c.PortListen)
+	fmt.Printf("Starting web server, listen on address: %s:%s \n", c.Host, c.PortListen)
 	log.Println(srv.ListenAndServe())
 }
 
+func StartSession() {
+
+}
+
 func SetHandlers(r *mux.Router) {
-	r.HandleFunc("/", methodIndex).
-		Methods("GET").
+	r.HandleFunc("/api", methodIndex).
+		Methods("POST").
 		Headers("Content-Type", "application/json")
 }
 

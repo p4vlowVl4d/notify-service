@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	CONFIG_FILE string = "config/config.yml"
+	CONFIG_FILE string = "config/config.yml"	//путь к файлу конфигурации
 )
 
 func Init() {
@@ -17,6 +17,7 @@ func Init() {
 }
 
 func main() {
+	Init()
 	flag.Parse()
 	config.SetConfigFile(CONFIG_FILE)
 	if err := config.ReadInConfig(); err != nil {
